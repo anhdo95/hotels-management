@@ -1,18 +1,18 @@
 import * as React from 'react'
 
+import Nav from '@/components/Nav/Container'
+
 import 'antd/dist/antd.css'
-
-import Brand from '@/components/Brand/Container'
-
-// import debounce = require('lodash/debounce')
-
+import './app.scss'
 
 const App = () => {
-
 	return (
-    <>
-      <Brand />
-    </>
+    <div className="app">
+      <Nav />
+      <main className="main">
+
+      </main>
+    </div>
 	)
 }
 

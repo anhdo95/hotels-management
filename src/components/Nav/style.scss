@@ -3,52 +3,13 @@
 .nav {
   position: fixed;
   display: flex;
+  justify-content: space-between;
   width: 100%;
-  background-color: $c-black;
   z-index: $nav-z-index;
   box-shadow: 0 3px 3px rgba(0, 0, 0, .19);
 }
 
-.nav__links {
-  display: flex;
-  flex: 1 1 0;
-}
-
-.nav__link {
-  position: relative;
-}
-
-.nav__link:hover {
-  .nav__anchor {
-    color: $c-black;
-    background-color: $c-light-grey;
-  }
-
-  .nav__dropdown {
-    visibility: visible;
-  }
-}
-
-.nav__dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  visibility: hidden;
-  min-width: 160px;
-  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.19);
-}
-
-.nav__dropdown-link:hover {
-  background-color: $c-light-grey;
-}
-
-.nav__right {
-  width: 60px;
-  background-color: $c-red;
-}
-
-.nav__search {
-  display: block;
-  font-size: 14px;
-  color: $c-white;
+.nav__left {
+  width: 200px;
+  padding: 0 20px;
 }

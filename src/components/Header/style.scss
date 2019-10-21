@@ -1,0 +1,32 @@
+@import '@/styles/main.scss';
+
+.header {
+  z-index: $header-z-index;
+}
+
+.header__figure {
+  @include ratio(1170, 585);
+
+  background-image: url('/assets/images/basic-design.jpg');
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.header__content {
+  bottom: 15px;
+  color: $c-white;
+
+  @media (min-width: $xs) {
+    bottom: 40px;
+  }
+}
+
+.header__description {
+  margin-top: 15px;
+
+  @media (min-width: $xs) {
+    margin-top: 25px;
+  }
+}

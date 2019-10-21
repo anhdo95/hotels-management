@@ -1,0 +1,13 @@
+@mixin ratio ($width, $height) {
+  position: relative;
+
+  &:before {
+    content: '';
+    display: block;
+    padding-bottom: percentage($height / $width);
+  }
+}
+
+@mixin transition ($property: 'all', $duration: $duration, $timing: $ease) {
+  transition: $property $duration $timing;
+}

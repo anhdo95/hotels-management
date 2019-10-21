@@ -1,0 +1,35 @@
+@import '@/styles/main.scss';
+
+.brand__quote {
+  margin-top: 25px;
+}
+
+.brand__description {
+  margin: 25px 0;
+}
+
+.brand__members {
+  @extend .flex-column;
+
+  @media (min-width: $xxs) {
+    flex-direction: row;
+  }
+}
+
+.brand__member {
+  flex: 1 1 0;
+}
+
+.brand__member-avatar {
+  @include ratio(255, 255);
+
+  margin: 10px 80px 20px;
+
+  @media (min-width: $xxs) {
+    margin: 10px 16px 0;
+  }
+}
+
+.brand__member-image {
+  border-radius: 6px;
+}

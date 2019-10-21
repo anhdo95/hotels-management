@@ -3,11 +3,12 @@ import * as React from 'react'
 import './style.scss'
 
 interface PresenterProps {
-
+  getTodos: () => {}
 }
 
 export default class Presenter extends React.Component<PresenterProps> {
   componentDidMount() {
+    this.props.getTodos()
   }
 
   render() {

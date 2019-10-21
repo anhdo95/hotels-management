@@ -46,11 +46,9 @@ module.exports = merge(common, {
       },
       {
         test: /\.(sa|sc|c)ss$/,
-        exclude: /node_modules/,
         use: [
           'style-loader',
           'css-loader',
-          // 'postcss-loader',
           'sass-loader',
         ],
       },

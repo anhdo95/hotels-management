@@ -1,32 +1,59 @@
 @import '@/styles/main.scss';
 
 .header {
+  padding: 1em;
+  background-color: $c-dark-blue;
   z-index: $header-z-index;
 }
 
-.header__figure {
-  @include ratio(1170, 585);
+.header__stars {
+  .ant-slider-mark-text {
+    display: flex;
+  }
 
-  background-image: url('/assets/images/basic-design.jpg');
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-}
-
-.header__content {
-  bottom: 15px;
-  color: $c-white;
-
-  @media (min-width: $xs) {
-    bottom: 40px;
+  .ant-slider-step {
+    // background-color: $c-white;
   }
 }
 
-.header__description {
-  margin-top: 15px;
+.header__min-price,
+.header__max-price {
+  &.ant-input-number {
+    width: 120px;
+    height: 100%;
+    margin: 0 0.25em;
+    border: none;
+  }
 
-  @media (min-width: $xs) {
-    margin-top: 25px;
+  .ant-input-number-input {
+    height: 100%;
+    padding: 1em;
+    font-weight: 700;
+    border: none;
+  }
+}
+
+.header__search-box {
+  .ant-select-selection
+  .ant-select-selection__rendered {
+    line-height: 50px !important;
+    font-weight: 700;
+
+    .ant-select-search
+    .ant-select-search__field__wrap
+    .ant-select-search__field {
+      height: 50px;
+      border: none;
+    }
+  }
+}
+
+.header__search-btn {
+  &.ant-btn-icon-only {
+    width: 50px;
+    height: 50px;
+    color: $c-white;
+    background-color: $c-light-red;
+    border: none;
   }
 }

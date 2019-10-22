@@ -1,4 +1,4 @@
-import { ACTIONS } from '@/util/constants';
+import { ACTIONS } from '@/util/constants'
 
 export const setTodos = (todos: any[]) => {
   return {

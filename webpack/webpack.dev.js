@@ -18,7 +18,7 @@ module.exports = merge(common, {
     port: 3000,
     hot: true,
     host: '127.0.0.1',
-    // host: '0.0.0.0' // allow to be accessible externally
+    // host: '0.0.0.0', // allow to be accessible externally
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
@@ -27,9 +27,9 @@ module.exports = merge(common, {
     proxy: [
       {
         context: [
-          '/api'
+          '/'
         ],
-        target: 'http://127.0.0.1:5000/',
+        target: 'http://127.0.0.1:5000',
         secure: false,
         headers: {
           host: 'http://127.0.0.1:3000'

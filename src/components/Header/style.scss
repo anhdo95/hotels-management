@@ -29,21 +29,6 @@
   }
 }
 
-.header__search-box {
-  .ant-select-selection
-  .ant-select-selection__rendered {
-    line-height: 50px !important;
-    font-weight: 700;
-
-    .ant-select-search
-    .ant-select-search__field__wrap
-    .ant-select-search__field {
-      height: 50px;
-      border: none;
-    }
-  }
-}
-
 .header__search-btn {
   &.ant-btn-icon-only {
     width: 50px;

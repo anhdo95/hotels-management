@@ -6,14 +6,9 @@ const { SubMenu } = Menu;
 import './style.scss'
 
 interface Props {
-  getTodos: () => {}
 }
 
 class Presenter extends React.Component<Props> {
-  componentDidMount() {
-    this.props.getTodos()
-  }
-
   render() {
     return (
       <nav className="nav">

@@ -5,6 +5,7 @@
     "tslint-react-hooks"
   ],
   "rules": {
+      "no-return-await": false,
       "forin": false,
       "no-submodule-imports": false,
       "no-implicit-dependencies": false,

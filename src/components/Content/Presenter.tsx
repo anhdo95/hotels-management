@@ -58,9 +58,6 @@ export default class Presenter extends React.Component<PresenterProps> {
     viewMode: VIEW_MODE.GRID
   }
 
-  componentDidMount() {
-  }
-
   handlePaginationChange = (page: number) => {
     console.log('page :', page);
   }
@@ -92,8 +89,6 @@ export default class Presenter extends React.Component<PresenterProps> {
   }
 
   renderHotels() {
-    console.log('this.state.isListViewMode :', this.state.isListViewMode)
-
     const listItemClassName = classNames('content__hotel flex-column', {
       'content__hotel--listview': this.state.isListViewMode,
     })

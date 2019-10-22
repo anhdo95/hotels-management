@@ -1,9 +1,9 @@
 import * as React from 'react'
-import { AutoComplete, InputNumber, Button, Row, Col, Slider, Icon } from 'antd'
+import { InputNumber, Button, Row, Col, Slider, Icon } from 'antd'
+
+import SearchBox from '@components/Header/SearchBox/Container';
 
 import './style.scss'
-
-const { Option, OptGroup } = AutoComplete;
 
 const buildStars = () => {
   const stars = [
@@ -28,41 +28,6 @@ const buildStars = () => {
   return marks
 }
 
-const dataSource = [
-  {
-    title: 'Libraries',
-    children: [
-      {
-        title: 'AntDesign',
-        count: 10000,
-      },
-      {
-        title: 'AntDesign UI',
-        count: 10600,
-      },
-    ],
-  },
-];
-
-const options = dataSource
-  .map(group => (
-    <OptGroup key={group.title} label={group.title}>
-      {group.children.map(opt => (
-        <Option key={opt.title} value={opt.title}>
-          {opt.title}
-          <span className="certain-search-item-count">{opt.count} people</span>
-        </Option>
-      ))}
-    </OptGroup>
-  ))
-  .concat([
-    <Option disabled key="all" className="show-all">
-      <a href="https://www.google.com/search?q=antd" target="_blank" rel="noopener noreferrer">
-        View all results
-      </a>
-    </Option>,
-  ]);
-
 interface PresenterProps {
 
 }
@@ -77,17 +42,7 @@ export default class Presenter extends React.Component<PresenterProps> {
       <header className="rel header">
         <Row type="flex" justify="space-between" gutter={16}>
           <Col {...{ xs: 24, md: 24, lg: 8 }}>
-            <AutoComplete
-              className="header__search-box"
-              dropdownClassName="certain-category-search-dropdown"
-              dropdownMatchSelectWidth={false}
-              dropdownStyle={{ width: 300 }}
-              size="large"
-              style={{ width: '100%' }}
-              dataSource={options}
-              placeholder="Find hotels by location"
-              optionLabelProp="value"
-            />
+            <SearchBox />
           </Col>
           <Col {...{ xs: 24, md: 24, lg: 8 }}>
             <Slider className="header__stars" tooltipVisible={false} marks={buildStars()} step={20} />
@@ -112,7 +67,6 @@ export default class Presenter extends React.Component<PresenterProps> {
               </Col>
               <Col><Button className="header__search-btn" type="danger" icon="search" /></Col>
             </Row>
-
           </Col>
         </Row>
       </header>

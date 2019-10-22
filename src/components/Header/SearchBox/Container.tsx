@@ -1,8 +1,8 @@
-import RootState from '@/interfaces/state/root-state'
+import { withRouter, RouteComponentProps } from 'react-router'
 import { connect } from 'react-redux'
 
+import RootState from '@/interfaces/state/root-state'
 import HotelService from '@/services/hotel-service'
-// import { composeContainer } from '@/util'
 
 import Presenter from './Presenter'
 
@@ -12,7 +12,7 @@ interface DispatchProps {
   searchDestinations: (destination: string) => Promise<string[]>
 }
 
-interface OwnProps {
+interface OwnProps extends RouteComponentProps {
   onLocationChange: (location: string) => void
 }
 const mapStateToProps = (_state: RootState) => {
@@ -38,4 +38,8 @@ const mapDispatchToProps = () => {
   }
 }
 
-export default connect<StateProps, DispatchProps, OwnProps>(mapStateToProps, mapDispatchToProps)(Presenter)
+export default withRouter(
+  connect<StateProps, DispatchProps, OwnProps>(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Presenter))

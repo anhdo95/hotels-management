@@ -1,28 +1,14 @@
 import * as React from 'react'
 import { InputNumber, Button, Row, Col, Slider, Icon } from 'antd'
+import { stringify, parse } from 'query-string'
 
 import SearchBox from '@components/Header/SearchBox/Container'
+
+import HotelParams from '@interfaces/hotel-params'
 import { ITEM_PER_PAGE } from '@/util/constants'
 
 import './style.scss'
-
-// const mappingStarValue: any = {
-//   0: 0,
-//   20: 1,
-//   40: 2,
-//   60: 3,
-//   80: 4,
-//   100: 5,
-// }
-
-// const mappingStarKey: any = {
-//   0: 0,
-//   1: 20,
-//   2: 40,
-//   3: 60,
-//   4: 80,
-//   5: 100,
-// }
+import { RouteComponentProps } from 'react-router'
 
 const buildStars = () => {
   const stars = [
@@ -48,23 +34,13 @@ const buildStars = () => {
   return marks
 }
 
-interface PresenterProps {
-  searchHotels: (params: object) => Promise<any[]>
+interface PresenterProps extends RouteComponentProps {
+  searchHotels: (params: HotelParams) => Promise<any[]>
 }
 
 interface PresenterState {
   hotels: object[],
-  params: {
-    location: string,
-    minStar: number,
-    maxStar: number,
-    minPrice: number,
-    maxPrice: number,
-    sortBy: string,
-    sortDesc: boolean,
-    pageSize: number,
-    pageNumber: number
-  }
+  params: HotelParams
 }
 
 export default class Presenter extends React.Component<PresenterProps, PresenterState> {
@@ -82,18 +58,28 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
         sortBy: '',
         sortDesc: false,
         pageSize: ITEM_PER_PAGE,
-        pageNumber: 0
+        pageNumber: 1
       }
     }
   }
 
   updateParams = (overrideParams: object) => {
-    this.setState({
-      params: {
-        ...this.state.params,
-        ...overrideParams
-      }
-    })
+    const params = {
+      ...this.state.params,
+      ...overrideParams
+    }
+
+    this.setState({ params }, this.changeURL.bind(this, params))
+  }
+
+  changeURL = (params = {}) => {
+    this.props.history.push(
+      `${this.props.location.pathname}?${stringify(params, { arrayFormat: 'bracket' })}`
+    )
+  }
+
+  getParams() {
+    return parse(this.props.history.location.search, { arrayFormat: 'bracket' })
   }
 
   handleLocationChange = (location: string) => {
@@ -101,7 +87,7 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
   }
 
   handleStarChange = (starRange: [number, number]) => {
-    const [ minStar, maxStar ] = starRange
+    const [minStar, maxStar] = starRange
     this.updateParams({
       minStar,
       maxStar
@@ -123,11 +109,12 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
   }
 
   handleSearch = async () => {
-    // const hotels = await this.props.searchHotels(params)
+    const { params } = this.state
 
-    console.info('params', this.state.params)
+    const hotels = await this.props.searchHotels(params)
 
-    // this.setState({ hotels })
+    this.changeURL(params)
+    this.setState({ hotels })
   }
 
   render() {

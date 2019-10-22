@@ -1,4 +1,5 @@
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router'
 import noop = require('lodash/noop')
 
 import request from './request'
@@ -15,7 +16,7 @@ export const composeContainer = (
 	mapStateToProps: any,
   mapDispatchToProps: any = noop(),
 ) => {
-	return connect(mapStateToProps, mapDispatchToProps)(component)
+	return withRouter(connect(mapStateToProps, mapDispatchToProps)(component))
 }
 
 export default {

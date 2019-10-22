@@ -1,5 +1,7 @@
 import * as React from 'react'
+import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { AutoComplete } from 'antd'
+import { stringify } from 'query-string'
 
 import debounce = require('lodash/debounce')
 
@@ -9,7 +11,7 @@ import './style.scss'
 
 const { Option, OptGroup } = AutoComplete
 
-interface PresenterProps {
+interface PresenterProps extends RouteComponentProps {
   searchDestinations: (destination: string) => Promise<string[]>
   onLocationChange: (location: string) => void
 }
@@ -18,9 +20,13 @@ interface PresenterState {
   destinations: string[]
 }
 
-export default class Presenter extends React.Component<PresenterProps, PresenterState> {
-  state: PresenterState = {
-    destinations: []
+class Presenter extends React.Component<PresenterProps, PresenterState> {
+  constructor(props: PresenterProps) {
+    super(props)
+
+    this.state = {
+      destinations: []
+    }
   }
 
   get options() {
@@ -33,6 +39,13 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
     )]
   }
 
+  changeURL = (params = {}) =>  {
+    this.props.history.push(
+      `${this.props.location.pathname}?${stringify(params, {arrayFormat: 'bracket'})}`
+    )
+  }
+
+  // tslint:disable-next-line: member-ordering
   handleSearch = debounce(async (location: string) => {
     const destinations = await this.props.searchDestinations(location)
 
@@ -54,3 +67,5 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
     )
   }
 }
+
+export default withRouter(Presenter)

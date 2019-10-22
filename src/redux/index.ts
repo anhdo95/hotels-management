@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 
-import todoReducer from '@redux/reducers/todo'
+import hotelReducer from '@redux/reducers/hotel'
 
 export default combineReducers({
-  todo: todoReducer,
+  hotel: hotelReducer,
 })

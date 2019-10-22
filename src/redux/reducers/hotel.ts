@@ -3,15 +3,15 @@ import cloneDeep = require('lodash/cloneDeep');
 import { ACTIONS } from '@/util/constants'
 
 const initialState: any = {
-  todos: []
+  locations: []
 }
 
-const todoReducer = (state = initialState, action: any) => {
+const hotelReducer = (state = initialState, action: any) => {
   const newState = cloneDeep(state)
 
   switch (action.type) {
-    case ACTIONS.SET_TODOS:
-      newState.todos = action.payload.todos
+    case ACTIONS.SET_HOTEL_LOCATIONS:
+      newState.locations = action.payload.locations
       return newState
 
     default:
@@ -19,4 +19,4 @@ const todoReducer = (state = initialState, action: any) => {
   }
 }
 
-export default todoReducer
+export default hotelReducer

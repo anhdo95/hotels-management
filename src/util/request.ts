@@ -25,32 +25,36 @@ const request = (options: any = {}) => {
   }
 
 	return axios(config).then(res => {
-    const data = res.data
+    const { data } = res
 
-    if (data.status) {
-      if (data.status === RESPONSE_STATUS.SUCCESS) {
-        options.success && options.success(data.data)
+    if (res.status) {
+      if (res.status === RESPONSE_STATUS.SUCCESS) {
+        // tslint:disable-next-line: no-unused-expression
+        options.success && options.success(data)
 
-        return data.data
+        return data
       }
 
+      // tslint:disable-next-line: no-unused-expression
       options.error && options.error({
-        code: data.data,
-        message: data.message
+        code: data,
+        message: data.error
       })
 
       return Promise.reject({
-        code: data.data,
-        message: data.message
+        code: data,
+        message: data.error
       })
     }
 
+    // tslint:disable-next-line: no-unused-expression
     options.success && options.success(data)
 
     return data
 	}).catch((...args) => {
     const [ res ] = args
 
+    // tslint:disable-next-line: no-unused-expression
     options.error && options.error(res)
 
     return Promise.reject(res)

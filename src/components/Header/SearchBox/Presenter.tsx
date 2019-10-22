@@ -11,6 +11,7 @@ const { Option, OptGroup } = AutoComplete
 
 interface PresenterProps {
   searchDestinations: (destination: string) => Promise<string[]>
+  onLocationChange: (location: string) => void
 }
 
 interface PresenterState {
@@ -32,10 +33,12 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
     )]
   }
 
-  handleSearch = debounce(async (value: string) => {
-    const destinations = await this.props.searchDestinations(value)
+  handleSearch = debounce(async (location: string) => {
+    const destinations = await this.props.searchDestinations(location)
 
     this.setState({ destinations })
+
+    this.props.onLocationChange(location)
   }, SEARCH_DEBOUNCE_IN_MS)
 
   render() {

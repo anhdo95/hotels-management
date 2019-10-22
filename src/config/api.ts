@@ -1,5 +1,8 @@
 export default {
-  todo: {
-    all: '/api/v1/todos',
+  hotel: {
+    search: '/hotels/query_basic',
+  },
+  destination: {
+    search: '/destination/suggess'
   }
 }

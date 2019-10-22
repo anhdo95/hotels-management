@@ -13,7 +13,7 @@ import request from './request'
 export const composeContainer = (
 	component: React.ComponentType,
 	mapStateToProps: any,
-	mapDispatchToProps: any = noop()
+  mapDispatchToProps: any = noop(),
 ) => {
 	return connect(mapStateToProps, mapDispatchToProps)(component)
 }

@@ -19,9 +19,9 @@ const buildStars = () => {
   stars.forEach(star => {
     marks[star.key] = {
       style: {
-        color: '#f50',
+        color: '#fe0',
       },
-      label: <><i>{star.value}</i><Icon type="star" /></>,
+      label: <><i>{star.value}</i><Icon type="star" theme="filled" /></>,
     }
   })
 

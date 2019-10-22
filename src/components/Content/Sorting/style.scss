@@ -1,9 +1,0 @@
-@import '@/styles/variables.scss';
-
-.content__sorting {
-  justify-content: flex-start;
-
-  @media (min-width: $s) {
-    justify-content: flex-end;
-  }
-}

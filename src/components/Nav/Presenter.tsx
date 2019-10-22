@@ -5,7 +5,15 @@ const { SubMenu } = Menu;
 
 import './style.scss'
 
-class Presenter extends React.Component {
+interface Props {
+  getTodos: () => {}
+}
+
+class Presenter extends React.Component<Props> {
+  componentDidMount() {
+    this.props.getTodos()
+  }
+
   render() {
     return (
       <nav className="nav">

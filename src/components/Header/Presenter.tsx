@@ -90,7 +90,7 @@ export default class Presenter extends React.Component<PresenterProps> {
             />
           </Col>
           <Col {...{ xs: 24, md: 24, lg: 8 }}>
-            <Slider className="header__stars" marks={buildStars()} step={20} />
+            <Slider className="header__stars" tooltipVisible={false} marks={buildStars()} step={20} />
           </Col>
           <Col>
             <Row type="flex" justify="end">

@@ -1,19 +1,13 @@
 // import config from '@/config'
+import request from '@/util/request';
 
 export default class TodoService {
 	async getTodos() {
-		return new Promise((resolve) => {
-			const res: any = {
-				error: null,
-				data: [
-					'long giang, vietnam',
-					'ha long, quang ninh, vietnam',
-					'bai tu long/ hai phong, vietnam',
-				],
-			}
-
-			resolve(res.data)
-		})
+    return await request({
+      // url: 'https://www.w3schools.com/angular/customers.php',
+      url: '/assets/mock-data/destination-suggess.json',
+      method: 'get',
+    })
 		// return fetch(config.api.todo.all)
 		// 	.then((res) => res.json())
 		// 	.then((data) => {

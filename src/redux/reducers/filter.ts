@@ -16,9 +16,6 @@ const initialState = {
 const filterReducer = (state = initialState, action: any) => {
   const newState = cloneDeep(state)
 
-  if (action && action.payload)
-    console.log('action.payload.filter', action.payload.filter)
-
 	switch (action.type) {
 		case ACTIONS.SET_HOTEL_FILTER:
 			newState.hotel = {

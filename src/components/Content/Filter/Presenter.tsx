@@ -2,7 +2,6 @@ import * as React from 'react'
 import { RouteComponentProps } from 'react-router'
 import { InputNumber, Button, Row, Col, Slider, Icon } from 'antd'
 
-import isEmpty = require('lodash/isEmpty')
 import reduce = require('lodash/reduce')
 
 // Components
@@ -10,7 +9,7 @@ import SearchBox from '@components/Content/Filter/SearchBox/Container'
 
 // Utils
 import { DEFAULT_PAGE, STAR_SLIDER } from '@/util/constants'
-import { getUrlParams, formatNumberToCurrency, parseCurrencyToNumber } from '@/util/helpers'
+import { formatNumberToCurrency, parseCurrencyToNumber } from '@/util/helpers'
 
 // Styles
 import './style.scss'
@@ -45,22 +44,6 @@ interface PresenterState {
 }
 
 export default class Presenter extends React.Component<PresenterProps, PresenterState> {
-  constructor(props: PresenterProps) {
-    super(props)
-
-    const params = getUrlParams(props.history)
-
-    if (!isEmpty(params)) {
-      this.props.setHotelFilter(params)
-    }
-  }
-
-  componentDidMount() {
-    if (!isEmpty(getUrlParams(this.props.history))) {
-      this.handleSearch()
-    }
-  }
-
   handleChange = (fieldName: string) => {
     return (value: any) => {
       this.props.setHotelFilter({ [fieldName]: value })

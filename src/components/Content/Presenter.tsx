@@ -1,16 +1,19 @@
 import * as React from 'react'
 import { RouteComponentProps } from 'react-router'
+import { Link } from 'react-router-dom'
 import { Row, Col, List, Icon, Pagination } from 'antd'
 import { ListGridType } from 'antd/lib/list'
 import { ParsedQuery } from 'query-string'
 import classNames from 'classnames'
+
+import isEmpty = require('lodash/isEmpty')
 
 import Filter from '@/components/Content/Filter/Container'
 import Sorting from '@/components/Content/Sorting/Container'
 
 import HotelParams from '@/interfaces/hotel-params'
 import { REGEX, ITEM_PER_PAGE } from '@/util/constants'
-import { changeUrl } from '@/util/helpers'
+import { changeUrl, getUrlParams } from '@/util/helpers'
 
 import './style.scss'
 
@@ -49,9 +52,21 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
   constructor(props: PresenterProps) {
     super(props)
 
+    const params = getUrlParams(props.history)
+
+    if (!isEmpty(params)) {
+      this.props.setHotelFilter(params)
+    }
+
     this.state = {
       isListViewMode: false,
       viewMode: VIEW_MODE.GRID,
+    }
+  }
+
+  componentDidMount() {
+    if (!isEmpty(getUrlParams(this.props.history))) {
+      this.handleSearch()
     }
   }
 
@@ -82,7 +97,7 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
     return (
       <Row type="flex" justify="space-between" gutter={16}>
         <Col {...{ xs: 24, md: 16 }}>
-          <h2>{this.props.totalElements} hotels in Đà Nẵng, Vietnam</h2>
+          <h2>{this.props.totalElements} hotels</h2>
         </Col>
         <Col {...{ xs: 24, md: 8 }}>
           <Row className="content__right" type="flex">
@@ -174,10 +189,10 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
         dataSource={this.props.hotels}
         renderItem={(hotel, index) => (
           <List.Item>
-            <a className={listItemClassName} href="#">
+            <Link className={listItemClassName} to={`/hotel/${hotel.hotelId}`}>
               {this.renderThumbnai(hotel, index)}
               {this.renderDescription(hotel)}
-            </a>
+            </Link>
           </List.Item>
         )}
       />
@@ -190,7 +205,7 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
     return hotels && totalElements > ITEM_PER_PAGE && (
       <Pagination
         className="align-c"
-        current={filter.pageNumber}
+        current={Number(filter.pageNumber)}
         pageSize={ITEM_PER_PAGE}
         total={totalElements}
         onChange={this.handlePaginationChange}

@@ -7,19 +7,27 @@ import map = require('lodash/map')
 import { SORTING_HOTEL_OPTIONS } from '@/util/constants'
 
 interface PresenterProps extends RouteComponentProps {
+  filter: any,
   setSortFilter: (sort: any) => void,
   onSearch: () => void
 }
 
-export default class Presenter extends React.PureComponent<PresenterProps> {
+export default class Presenter extends React.Component<PresenterProps> {
   handleSelect = (sort: string) => {
     this.props.setSortFilter(sort)
     this.props.onSearch()
   }
 
   render() {
+    const props: any = {}
+
+    if (this.props.filter.sort) {
+      props.defaultValue = this.props.filter.sort
+    }
+
     return (
       <Select
+        { ...props }
         size="large"
         style={{ width: 250 }}
         placeholder="Order by: Select"

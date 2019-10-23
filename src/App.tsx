@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import Nav from '@/components/Nav/Container'
 import Footer from '@/components/Footer/Container'
@@ -15,9 +15,11 @@ const App = () => {
       <Router>
         <Nav />
         <main className="main">
-          {routes.map(route => (
-            <Route key={route.path} exact path={route.path} component={route.component} />
-          ))}
+          <Switch>
+            {routes.map(route => (
+              <Route exact key={route.path} path={route.path} component={route.component} />
+            ))}
+          </Switch>
         </main>
         <Footer />
       </Router>

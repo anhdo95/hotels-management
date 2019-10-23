@@ -1,7 +1,5 @@
 import * as React from 'react'
-import { Divider } from 'antd';
-
-import './style.scss'
+import { Divider } from 'antd'
 
 interface PresenterProps {
 

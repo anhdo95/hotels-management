@@ -8,7 +8,9 @@ import { Dispatch } from 'redux'
 import { setHotelFilter } from '@/redux/actions/filter'
 import { DEFAULT_PAGE } from '@/util/constants'
 
-interface StateProps {}
+interface StateProps {
+  filter: any
+}
 
 interface DispatchProps {
   setSortFilter: (sort: any) => void
@@ -18,8 +20,9 @@ interface OwnProps extends RouteComponentProps {
   onSearch: () => void
 }
 
-const mapStateToProps = (_state: RootState) => {
+const mapStateToProps = (state: RootState) => {
   return {
+    filter: state.filter.hotel
   }
 }
 

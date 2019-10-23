@@ -1,4 +1,5 @@
 import { withRouter, RouteComponentProps } from 'react-router'
+import { Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 import RootState from '@/interfaces/state/root-state'
@@ -7,7 +8,6 @@ import HotelService from '@/services/hotel-service'
 import { setHotelFilter } from '@/redux/actions/filter'
 
 import Presenter from './Presenter'
-import { Dispatch } from 'redux'
 
 interface StateProps {
   destination: string

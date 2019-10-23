@@ -71,13 +71,9 @@ const mapDispatchToProps: any = (dispatch: Dispatch) => {
             pageNumber: Number(params.pageNumber),
             pageSize: ITEM_PER_PAGE
           }
-
-          console.log('requestParams', requestParams)
         }
 
         const res = await hotelService.searchHotels(requestParams)
-
-        console.log('res :', res);
 
         dispatch(setHotels(res))
       } catch (error) {

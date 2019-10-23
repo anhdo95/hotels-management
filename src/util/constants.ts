@@ -1,6 +1,7 @@
 export const ACTIONS = {
 	SET_HOTEL_LOCATIONS: 'SET_HOTEL_LOCATIONS',
-	SET_HOTELS: 'SET_HOTELS',
+  SET_HOTELS: 'SET_HOTELS',
+  SET_HOTEL_FILTER: 'SET_HOTEL_FILTER'
 }
 
 export const RESPONSE_STATUS = {
@@ -37,13 +38,6 @@ export const SORTING_HOTEL_OPTIONS = [
   { key: 'price:false', value: 'Price: Low to High' },
   { key: 'price:true', value: 'Price: High to Low' },
 ]
-
-export const SORTING_HOTEL_KEYS = {
-  NAME_ASC: 'name:false',
-  NAME_DESC: 'name:true',
-  PRICE_ASC: 'price:false',
-  PRICE_DESC: 'price:true',
-}
 
 export const REGEX = {
   NUMBER_TO_CURRENCY_FORMAT: /\B(?=(\d{3})+(?!\d))/g,

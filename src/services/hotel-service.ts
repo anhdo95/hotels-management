@@ -1,5 +1,6 @@
 import config from '@/config'
 import request from '@/util/request'
+import HotelRequest from '@/interfaces/hotel-request'
 
 export default class HotelService {
 	async searchDestinations(params: any = {}) {
@@ -20,10 +21,10 @@ export default class HotelService {
     return res.data
   }
 
-  async searchHotels(params: any = {}) {
+  async searchHotels(params: HotelRequest) {
     const data = {
       query: {
-        location: params.location && params.location.trim(),
+        location: params.location.trim(),
         minStar: params.minStar,
         maxStar: params.maxStar,
         minPrice: params.minPrice,

@@ -1,5 +1,6 @@
 export const ACTIONS = {
 	SET_HOTEL_LOCATIONS: 'SET_HOTEL_LOCATIONS',
+	SET_HOTELS: 'SET_HOTELS',
 }
 
 export const RESPONSE_STATUS = {
@@ -27,4 +28,9 @@ export const STAR_SLIDER: any = {
 		4: 80,
 		5: 100,
 	},
+}
+
+export const REGEX = {
+  NUMBER_TO_CURRENCY_FORMAT: /\B(?=(\d{3})+(?!\d))/g,
+  CURRENCY_TO_NUMBER_FORMAT: /\$\s?|(,*)/g
 }

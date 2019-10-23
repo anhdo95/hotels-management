@@ -1,9 +1,11 @@
-export default interface HotelParams {
+export default interface HotelRequest {
 	location: string
-	starRange: [ number, number ]
+	minStar: number
+	maxStar: number
 	minPrice: number
 	maxPrice: number
 	sortBy: string
 	sortDesc: boolean
+	pageSize: number
 	pageNumber: number
 }

@@ -1,5 +1,5 @@
-import UserState from './user-state'
+import HotelState from './hotel-state'
 
 export default interface RootState {
-	user: UserState
+	hotel: HotelState
 }

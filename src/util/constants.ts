@@ -10,6 +10,7 @@ export const RESPONSE_STATUS = {
 export const SEARCH_DEBOUNCE_IN_MS = 500
 
 export const ITEM_PER_PAGE = 20
+export const DEFAULT_PAGE = 1
 
 export const STAR_SLIDER: any = {
 	KEY_TO_VALUE: {

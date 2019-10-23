@@ -36,7 +36,7 @@ export default class HotelService {
       },
       paging: {
         take: params.pageSize,
-        skip: ((params.pageNumber - 1) * params.pageSize) || undefined
+        skip: ((params.pageNumber - 1) * params.pageSize) || 0
       }
     }
 

@@ -1,8 +1,17 @@
+import { connect } from 'react-redux'
+import { RouteComponentProps, withRouter } from 'react-router'
+
 import RootState from '@/interfaces/state/root-state'
 
-import { composeContainer } from '@/util'
-
 import Presenter from './Presenter'
+
+interface StateProps {}
+
+interface DispatchProps {
+}
+
+interface OwnProps extends RouteComponentProps {
+}
 
 const mapStateToProps = (state: RootState) => {
   console.log('state', state)
@@ -16,4 +25,9 @@ const mapDispatchToProps = () => {
   }
 }
 
-export default composeContainer(Presenter, mapStateToProps, mapDispatchToProps)
+export default withRouter(
+  connect<StateProps, DispatchProps, OwnProps>(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Presenter))
+

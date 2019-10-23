@@ -7,7 +7,7 @@ interface PresenterProps {
 
 }
 
-export default class Presenter extends React.Component<PresenterProps> {
+export default class Presenter extends React.PureComponent<PresenterProps> {
   render() {
     return (
       <footer className="align-c footer">

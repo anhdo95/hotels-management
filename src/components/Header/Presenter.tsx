@@ -1,14 +1,23 @@
 import * as React from 'react'
 import { RouteComponentProps } from 'react-router'
 import { InputNumber, Button, Row, Col, Slider, Icon } from 'antd'
-import { stringify, parse } from 'query-string'
+import { ParsedQuery } from 'query-string'
 
+import isEmpty = require('lodash/isEmpty')
+
+// Components
 import SearchBox from '@components/Header/SearchBox/Container'
 
+// Interfaces
 import HotelParams from '@interfaces/hotel-params'
-import { REGEX } from '@/util/constants'
 
+// Utils
+import { REGEX } from '@/util/constants'
+import { changeUrl, getUrlParams } from '@/util/helpers'
+
+// Styles
 import './style.scss'
+
 
 const buildStars = () => {
   const stars = [
@@ -35,29 +44,36 @@ const buildStars = () => {
 }
 
 interface PresenterProps extends RouteComponentProps {
-  searchHotels: (params: HotelParams) => Promise<any[]>
+  searchHotels: (params: HotelParams | ParsedQuery<string>) => Promise<any[]>
 }
 
 interface PresenterState {
   hotels: object[],
-  params: HotelParams
+  params: HotelParams | any
 }
 
 export default class Presenter extends React.Component<PresenterProps, PresenterState> {
   constructor(props: PresenterProps) {
     super(props)
 
+    const params = getUrlParams(props.history)
+
     this.state = {
       hotels: [],
-      params: {
+      params: isEmpty(params) ? {
         location: '',
         starRange: [0, 100],
         minPrice: 0,
         maxPrice: 0,
-        sortBy: '',
-        sortDesc: false,
+        sort: '',
         pageNumber: 1
-      }
+      } : params
+    }
+  }
+
+  componentDidMount() {
+    if (!isEmpty(getUrlParams(this.props.history))) {
+      this.handleSearch()
     }
   }
 
@@ -67,17 +83,7 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
       ...overrideParams
     }
 
-    this.setState({ params }, this.changeURL.bind(this, params))
-  }
-
-  changeURL = (params = {}) => {
-    this.props.history.push(
-      `${this.props.location.pathname}?${stringify(params, { arrayFormat: 'bracket' })}`
-    )
-  }
-
-  getParams() {
-    return parse(this.props.history.location.search, { arrayFormat: 'bracket' })
+    this.setState({ params })
   }
 
   handleLocationChange = (location: string) => {
@@ -103,11 +109,11 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
   }
 
   handleSearch = async () => {
-    const { params } = this.state
+    const { history, location, searchHotels } = this.props
 
-    const hotels = await this.props.searchHotels(params)
+    changeUrl(history, location, this.state.params)
+    const hotels = await searchHotels(getUrlParams(history))
 
-    this.changeURL(params)
     this.setState({ hotels })
   }
 
@@ -116,7 +122,10 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
       <header className="rel header">
         <Row type="flex" justify="space-between" gutter={16}>
           <Col {...{ xs: 24, md: 24, lg: 8 }}>
-            <SearchBox onLocationChange={this.handleLocationChange} />
+            <SearchBox
+              destination={this.state.params.location}
+              onLocationChange={this.handleLocationChange}
+            />
           </Col>
           <Col {...{ xs: 24, md: 24, lg: 8 }}>
             <Slider
@@ -124,7 +133,7 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
               range
               tooltipVisible={false}
               step={20}
-              defaultValue={this.state.params.starRange}
+              defaultValue={this.state.params.starRange.map(Number)}
               marks={buildStars()}
               onAfterChange={this.handleStarChange}
             />

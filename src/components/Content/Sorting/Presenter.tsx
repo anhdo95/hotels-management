@@ -1,54 +1,41 @@
 import * as React from 'react'
+import { RouteComponentProps } from 'react-router'
 import { Select } from 'antd'
+
+import map = require('lodash/map')
+
+import { SORTING_HOTEL_OPTIONS } from '@/util/constants';
+import { changeUrl, getUrlParams } from '@/util/helpers'
 
 import './style.scss'
 
-const { Option } = Select;
+const { Option } = Select
 
-interface PresenterProps {
+interface PresenterProps extends RouteComponentProps {
 
 }
 
-function onChange(value: any) {
-  console.log(`selected ${value}`);
-}
+export default class Presenter extends React.PureComponent<PresenterProps> {
+  handleChange = (sort: string) => {
+    const { history, location } = this.props
 
-function onBlur() {
-  console.log('blur');
-}
-
-function onFocus() {
-  console.log('focus');
-}
-
-function onSearch(val: any) {
-  console.log('search:', val);
-}
-
-export default class Presenter extends React.Component<PresenterProps> {
-  componentDidMount() {
+    changeUrl(history, location, {
+      ...getUrlParams(history),
+      sort
+    })
   }
 
   render() {
     return (
       <Select
-        showSearch
         size="large"
         style={{ width: 250 }}
         placeholder="Order by: Select"
-        optionFilterProp="children"
-        onChange={onChange}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        onSearch={onSearch}
-        filterOption={(input, option: any) =>
-          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        }
+        onChange={this.handleChange}
       >
-        <Option value="name:asc">Name: Alphabetical Ascending</Option>
-        <Option value="name:desc">Name: Alphabetical Descending</Option>
-        <Option value="price:asc">Price: Low to High</Option>
-        <Option value="price:desc">Price: High to Low</Option>
+        {map(SORTING_HOTEL_OPTIONS, (option) => (
+          <Option key={option.key} value={option.key}>{option.value}</Option>
+        ))}
       </Select>
     )
   }

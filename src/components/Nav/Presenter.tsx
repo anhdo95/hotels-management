@@ -8,7 +8,7 @@ import './style.scss'
 interface Props {
 }
 
-class Presenter extends React.Component<Props> {
+class Presenter extends React.PureComponent<Props> {
   render() {
     return (
       <nav className="nav">

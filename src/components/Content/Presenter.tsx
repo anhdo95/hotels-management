@@ -1,16 +1,19 @@
 import * as React from 'react'
+import { RouteComponentProps } from 'react-router'
 import { Row, Col, List, Icon, Pagination } from 'antd';
 import { ListGridType } from 'antd/lib/list';
 import classNames from 'classnames'
 
+import isEmpty = require('lodash/isEmpty')
+
 import Sorting from '@/components/Content/Sorting/Container'
 
-import { REGEX } from '@/util/constants';
+import { REGEX, ITEM_PER_PAGE } from '@/util/constants';
+import { changeUrl, getUrlParams } from '@/util/helpers'
 
 import './style.scss'
 
-const PAGE_SIZE = 20
-const CURRENT_PAGE = 1
+const DEFAULT_PAGE = 1
 
 const VIEW_MODE: {
   GRID: ListGridType,
@@ -29,18 +32,39 @@ const VIEW_MODE: {
   }
 }
 
-interface PresenterProps {
+interface PresenterProps extends RouteComponentProps {
   hotels: any[]
 }
 
-export default class Presenter extends React.Component<PresenterProps> {
-  state = {
-    isListViewMode: false,
-    viewMode: VIEW_MODE.GRID
+interface PresenterState {
+  isListViewMode: boolean,
+  viewMode: any,
+  pageNumber: number
+}
+
+export default class Presenter extends React.Component<PresenterProps, PresenterState> {
+  constructor(props: PresenterProps) {
+    super(props)
+
+    const params = getUrlParams(props.history)
+
+    this.state = {
+      isListViewMode: false,
+      viewMode: VIEW_MODE.GRID,
+      pageNumber: isEmpty(params) ? DEFAULT_PAGE : Number(params.pageNumber)
+    }
   }
 
-  handlePaginationChange = (page: number) => {
-    console.log('page :', page);
+
+  handlePaginationChange = (pageNumber: number) => {
+    const { history, location } = this.props
+
+    changeUrl(history, location, {
+      ...getUrlParams(history),
+      pageNumber
+    })
+
+    this.setState({ pageNumber })
   }
 
   handleViewModeChange = (viewMode: ListGridType) => {
@@ -70,13 +94,15 @@ export default class Presenter extends React.Component<PresenterProps> {
   }
 
   renderThumbnai(hotel: any) {
-    const {  name } = hotel
+    const { name } = hotel
 
     const hotelImages = [
       '/assets/images/hotels/hotel-4431944_960_720.jpg',
       '/assets/images/hotels/hotel-4431938_960_720.jpg',
       '/assets/images/hotels/hotel-2400364_960_720.jpg'
     ]
+
+    console.log('1111', 1111)
 
     function getRandomInt(max: number) {
       return Math.floor(Math.random() * Math.floor(max))
@@ -150,18 +176,22 @@ export default class Presenter extends React.Component<PresenterProps> {
   }
 
   render() {
+    const { hotels } = this.props
+
     return (
       <section className="content">
         {this.renderTop()}
         {this.renderHotels()}
-        {/* {actresses && actresses.totalPages > PAGINATION.DEFAULT_PAGE && */}
-        <Pagination
-          className="align-c"
-          current={CURRENT_PAGE}
-          pageSize={PAGE_SIZE}
-          total={50}
-          onChange={this.handlePaginationChange}
-        />
+        {hotels && hotels.length > ITEM_PER_PAGE && (
+          <Pagination
+            className="align-c"
+            current={this.state.pageNumber}
+            defaultCurrent={DEFAULT_PAGE}
+            pageSize={ITEM_PER_PAGE}
+            total={50}
+            onChange={this.handlePaginationChange}
+          />
+        )}
       </section>
     )
   }

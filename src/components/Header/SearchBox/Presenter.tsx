@@ -1,7 +1,6 @@
 import * as React from 'react'
-import { withRouter, RouteComponentProps } from 'react-router-dom'
+import { RouteComponentProps } from 'react-router-dom'
 import { AutoComplete } from 'antd'
-// import { stringify } from 'query-string'
 
 import debounce = require('lodash/debounce')
 
@@ -12,6 +11,7 @@ import './style.scss'
 const { Option, OptGroup } = AutoComplete
 
 interface PresenterProps extends RouteComponentProps {
+  destination: string | any,
   searchDestinations: (destination: string) => Promise<string[]>
   onLocationChange: (location: string) => void
 }
@@ -55,11 +55,13 @@ class Presenter extends React.Component<PresenterProps, PresenterState> {
         style={{ width: '100%' }}
         size="large"
         placeholder="Find hotels by location"
+        defaultValue={this.props.destination}
         dataSource={this.options}
         onSearch={this.handleSearch}
+        onSelect={this.props.onLocationChange}
       />
     )
   }
 }
 
-export default withRouter(Presenter)
+export default Presenter

@@ -13,7 +13,8 @@ interface DispatchProps {
 }
 
 interface OwnProps extends RouteComponentProps {
-  onLocationChange: (location: string) => void
+  destination: string | any,
+  onLocationChange: (location: string) => void,
 }
 const mapStateToProps = (_state: RootState) => {
   return {

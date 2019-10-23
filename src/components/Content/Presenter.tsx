@@ -2,21 +2,17 @@ import * as React from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Row, Col, List, Icon, Pagination } from 'antd'
 import { ListGridType } from 'antd/lib/list'
+import { ParsedQuery } from 'query-string'
 import classNames from 'classnames'
-
-import isEmpty = require('lodash/isEmpty')
 
 import Filter from '@/components/Content/Filter/Container'
 import Sorting from '@/components/Content/Sorting/Container'
 
+import HotelParams from '@/interfaces/hotel-params'
 import { REGEX, ITEM_PER_PAGE } from '@/util/constants'
-import { changeUrl, getUrlParams } from '@/util/helpers'
+import { changeUrl } from '@/util/helpers'
 
 import './style.scss'
-import HotelParams from '@/interfaces/hotel-params'
-import { ParsedQuery } from 'query-string'
-
-const DEFAULT_PAGE = 1
 
 const VIEW_MODE: {
   GRID: ListGridType,
@@ -38,38 +34,30 @@ const VIEW_MODE: {
 interface PresenterProps extends RouteComponentProps {
   hotels: any[],
   totalElements: number,
-  totalPage: number
-  searchHotels: (params: HotelParams | ParsedQuery<string>) => Promise<any[]>
+  totalPage: number,
+  filter: any,
+  searchHotels: (params: HotelParams | ParsedQuery<string>) => Promise<any[]>,
+  setHotelFilter: (filter: any) => void
 }
 
 interface PresenterState {
   isListViewMode: boolean,
   viewMode: any,
-  pageNumber: number
 }
 
 export default class Presenter extends React.Component<PresenterProps, PresenterState> {
   constructor(props: PresenterProps) {
     super(props)
 
-    const params = getUrlParams(props.history)
-
     this.state = {
       isListViewMode: false,
       viewMode: VIEW_MODE.GRID,
-      pageNumber: isEmpty(params) ? DEFAULT_PAGE : Number(params.pageNumber)
     }
   }
 
   handlePaginationChange = (pageNumber: number) => {
-    const { history, location } = this.props
-
-    changeUrl(history, location, {
-      ...getUrlParams(history),
-      pageNumber
-    })
-
-    this.setState({ pageNumber }, this.handleSearch)
+    this.props.setHotelFilter({ pageNumber })
+    this.handleSearch()
   }
 
   handleViewModeChange = (viewMode: ListGridType) => {
@@ -82,9 +70,12 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
   }
 
   handleSearch = () => {
-    const { history, searchHotels } = this.props
+    setTimeout(() => {
+      const { history, location, filter, searchHotels } = this.props
 
-    searchHotels(getUrlParams(history))
+      changeUrl(history, location, filter)
+      searchHotels(filter)
+    }, 0)
   }
 
   renderTop() {
@@ -95,7 +86,7 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
         </Col>
         <Col {...{ xs: 24, md: 8 }}>
           <Row className="content__right" type="flex">
-            <Sorting onPageChange={this.handlePaginationChange} />
+            <Sorting onSearch={this.handleSearch} />
             <Icon
               className="content__grid-view"
               type="appstore"
@@ -112,7 +103,7 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
     )
   }
 
-  renderThumbnai(hotel: any) {
+  renderThumbnai(hotel: any, index: number) {
     const { name } = hotel
 
     const hotelImages = [
@@ -121,11 +112,8 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
       '/assets/images/hotels/hotel-2400364_960_720.jpg'
     ]
 
-    function getRandomInt(max: number) {
-      return Math.floor(Math.random() * Math.floor(max))
-    }
-
-    const randomImage = hotelImages[getRandomInt(3)]
+    // Random images for demo
+    const randomImage = hotelImages[(index + 1) % 3]
 
     return (
       <div className="content__hotel-img-wrap">
@@ -184,10 +172,10 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
         className="content__hotels"
         grid={this.state.viewMode}
         dataSource={this.props.hotels}
-        renderItem={(hotel) => (
+        renderItem={(hotel, index) => (
           <List.Item>
             <a className={listItemClassName} href="#">
-              {this.renderThumbnai(hotel)}
+              {this.renderThumbnai(hotel, index)}
               {this.renderDescription(hotel)}
             </a>
           </List.Item>
@@ -197,13 +185,12 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
   }
 
   renderPagination() {
-    const { hotels, totalElements } = this.props
+    const { hotels, totalElements, filter } = this.props
 
     return hotels && totalElements > ITEM_PER_PAGE && (
       <Pagination
         className="align-c"
-        current={this.state.pageNumber}
-        defaultCurrent={DEFAULT_PAGE}
+        current={filter.pageNumber}
         pageSize={ITEM_PER_PAGE}
         total={totalElements}
         onChange={this.handlePaginationChange}
@@ -214,7 +201,7 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
   render() {
     return (
       <>
-        <Filter onPageChange={this.handlePaginationChange} />
+        <Filter onSearch={this.handleSearch} />
         <section className="content">
           {this.renderTop()}
           {this.renderHotels()}

@@ -4,27 +4,17 @@ import { Select } from 'antd'
 
 import map = require('lodash/map')
 
-import { SORTING_HOTEL_OPTIONS, DEFAULT_PAGE } from '@/util/constants';
-import { changeUrl, getUrlParams } from '@/util/helpers'
-
-import './style.scss'
-
-const { Option } = Select
+import { SORTING_HOTEL_OPTIONS } from '@/util/constants'
 
 interface PresenterProps extends RouteComponentProps {
-  onPageChange: (pageNumber: number) => void
+  setSortFilter: (sort: any) => void,
+  onSearch: () => void
 }
 
 export default class Presenter extends React.PureComponent<PresenterProps> {
   handleSelect = (sort: string) => {
-    const { history, location, onPageChange } = this.props
-
-    changeUrl(history, location, {
-      ...getUrlParams(history),
-      sort,
-    })
-
-    onPageChange(DEFAULT_PAGE)
+    this.props.setSortFilter(sort)
+    this.props.onSearch()
   }
 
   render() {
@@ -36,7 +26,7 @@ export default class Presenter extends React.PureComponent<PresenterProps> {
         onSelect={this.handleSelect}
       >
         {map(SORTING_HOTEL_OPTIONS, (option) => (
-          <Option key={option.key} value={option.key}>{option.value}</Option>
+          <Select.Option key={option.key} value={option.key}>{option.value}</Select.Option>
         ))}
       </Select>
     )

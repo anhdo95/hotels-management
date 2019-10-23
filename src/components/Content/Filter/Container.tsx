@@ -3,25 +3,34 @@ import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
 
 import RootState from '@/interfaces/state/root-state'
+import { setHotelFilter } from '@/redux/actions/filter';
 
 import Presenter from './Presenter'
+import { Dispatch } from 'redux';
 
-interface StateProps { }
+interface StateProps {
+  filter: any
+}
 
 interface DispatchProps {
+  setHotelFilter: (filter: any) => void
 }
 
 interface OwnProps extends RouteComponentProps {
-  onPageChange: (pageNumber: number) => void
+  onSearch: () => void,
 }
 
-const mapStateToProps = (_state: RootState) => {
+const mapStateToProps = (state: RootState) => {
   return {
+    filter: state.filter.hotel
   }
 }
 
-const mapDispatchToProps: any = () => {
+const mapDispatchToProps: any = (dispatch: Dispatch) => {
   return {
+    setHotelFilter(filter: any) {
+      dispatch(setHotelFilter(filter))
+    }
   }
 }
 

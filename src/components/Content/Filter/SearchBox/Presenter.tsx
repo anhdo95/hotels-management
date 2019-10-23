@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { AutoComplete } from 'antd'
-
 import debounce = require('lodash/debounce')
 
 import { SEARCH_DEBOUNCE_IN_MS } from '@/util/constants'
@@ -13,7 +12,7 @@ const { Option, OptGroup } = AutoComplete
 interface PresenterProps extends RouteComponentProps {
   destination: string | any,
   searchDestinations: (destination: string) => Promise<string[]>
-  onLocationChange: (location: string) => void
+  setFilterLocation: (location: string) => void
 }
 
 interface PresenterState {
@@ -45,20 +44,19 @@ class Presenter extends React.Component<PresenterProps, PresenterState> {
 
     this.setState({ destinations })
 
-    this.props.onLocationChange(location)
+    this.props.setFilterLocation(location)
   }, SEARCH_DEBOUNCE_IN_MS)
 
   render() {
     return (
       <AutoComplete
         className="header__search-box"
-        style={{ width: '100%' }}
         size="large"
         placeholder="Find hotels by location"
         defaultValue={this.props.destination}
         dataSource={this.options}
         onSearch={this.handleSearch}
-        onSelect={this.props.onLocationChange}
+        onSelect={this.props.setFilterLocation}
       />
     )
   }

@@ -11,12 +11,14 @@ import HotelRequest from '@/interfaces/hotel-request'
 import HotelParams from '@/interfaces/hotel-params'
 import HotelService from '@/services/hotel-service'
 import { setHotels } from '@/redux/actions/hotel'
+import { setHotelFilter } from '@/redux/actions/filter'
 import { STAR_SLIDER, ITEM_PER_PAGE } from '@/util/constants'
 
 interface StateProps {}
 
 interface DispatchProps {
   searchHotels: (params: HotelParams) => Promise<any[]>
+  setHotelFilter: (filter: any) => void
 }
 
 interface OwnProps extends RouteComponentProps {
@@ -28,7 +30,8 @@ const mapStateToProps = (state: RootState) => {
   return {
     hotels,
     totalElements,
-    totalPage
+    totalPage,
+    filter: state.filter.hotel,
   }
 }
 
@@ -80,6 +83,10 @@ const mapDispatchToProps: any = (dispatch: Dispatch) => {
       } catch (error) {
         console.error(error)
       }
+    },
+
+    setHotelFilter(filter: any) {
+      dispatch(setHotelFilter(filter))
     }
   }
 }

@@ -3,52 +3,45 @@ import { RouteComponentProps } from 'react-router'
 import { InputNumber, Button, Row, Col, Slider, Icon } from 'antd'
 
 import isEmpty = require('lodash/isEmpty')
+import reduce = require('lodash/reduce')
 
 // Components
 import SearchBox from '@components/Content/Filter/SearchBox/Container'
 
-// Interfaces
-import HotelParams from '@interfaces/hotel-params'
-
 // Utils
-import { REGEX, DEFAULT_PAGE } from '@/util/constants'
-import { changeUrl, getUrlParams } from '@/util/helpers'
+import { DEFAULT_PAGE, STAR_SLIDER } from '@/util/constants'
+import { getUrlParams, formatNumberToCurrency, parseCurrencyToNumber } from '@/util/helpers'
 
 // Styles
 import './style.scss'
 
 
-const buildStars = () => {
-  const stars = [
-    { key: 0, value: 0 },
-    { key: 20, value: 1 },
-    { key: 40, value: 2 },
-    { key: 60, value: 3 },
-    { key: 80, value: 4 },
-    { key: 100, value: 5 },
-  ]
+const stars = reduce(STAR_SLIDER.KEY_TO_VALUE, (result: any, value: number, key: number) => {
+  result[key] = {
+    style: {
+      color: '#fe0',
+    },
+    label: <><i>{value}</i><Icon type="star" theme="filled" /></>
+  }
 
-  const marks: any = {}
+  return result
+}, {})
 
-  stars.forEach(star => {
-    marks[star.key] = {
-      style: {
-        color: '#fe0',
-      },
-      label: <><i>{star.value}</i><Icon type="star" theme="filled" /></>,
-    }
-  })
-
-  return marks
+const FIELD = {
+  STAR_RANGE: 'starRange',
+  MIN_PRICE: 'minPrice',
+  MAX_PRICE: 'maxPrice'
 }
 
+const GRID = { xs: 24, md: 24, lg: 8 }
+
 interface PresenterProps extends RouteComponentProps {
-  onPageChange: (pageNumber: number) => void
+  filter: any,
+  onSearch: () => void,
+  setHotelFilter: (filter: any) => void
 }
 
 interface PresenterState {
-  hotels: object[],
-  params: HotelParams | any
 }
 
 export default class Presenter extends React.Component<PresenterProps, PresenterState> {
@@ -57,15 +50,8 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
 
     const params = getUrlParams(props.history)
 
-    this.state = {
-      hotels: [],
-      params: isEmpty(params) ? {
-        location: '',
-        starRange: [0, 100],
-        minPrice: 0,
-        maxPrice: 0,
-        pageNumber: 1
-      } : params
+    if (!isEmpty(params)) {
+      this.props.setHotelFilter(params)
     }
   }
 
@@ -75,88 +61,77 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
     }
   }
 
-  updateParams = (overrideParams: object) => {
-    const params = {
-      ...this.state.params,
-      ...overrideParams
-    }
-
-    this.setState({ params })
-  }
-
-  handleLocationChange = (location: string) => {
-    this.updateParams({ location })
-  }
-
-  handleStarChange = (starRange: [number, number]) => {
-    this.updateParams({ starRange })
-  }
-
-  handlePriceChange = (isMinPrice: boolean) => {
-    return (price: number) => {
-      const params: any = {}
-
-      if (isMinPrice) {
-        params.minPrice = price
-      } else {
-        params.maxPrice = price
-      }
-
-      this.updateParams(params)
+  handleChange = (fieldName: string) => {
+    return (value: any) => {
+      this.props.setHotelFilter({ [fieldName]: value })
     }
   }
 
   handleSearch = async () => {
-    const { history, location, onPageChange } = this.props
+    this.props.setHotelFilter({ pageNumber: DEFAULT_PAGE })
+    this.props.onSearch()
+  }
 
-    changeUrl(history, location, this.state.params)
-    onPageChange(DEFAULT_PAGE)
-    // // const hotels = await searchHotels(getUrlParams(history))
-    // const hotels = await onSearch(getUrlParams(history))
+  renderStars() {
+    return (
+      <Slider
+        className="header__stars"
+        range
+        tooltipVisible={false}
+        step={20}
+        defaultValue={this.props.filter.starRange.map(Number)}
+        marks={stars}
+        onAfterChange={this.handleChange(FIELD.STAR_RANGE)}
+      />
+    )
+  }
 
-    // this.setState({ hotels })
+  renderPrice(props: any) {
+    return (
+      <InputNumber
+        className={props.className}
+        placeholder={props.placeholder}
+        defaultValue={props.defaultValue}
+        formatter={formatNumberToCurrency}
+        parser={parseCurrencyToNumber}
+        onChange={this.handleChange(props.fieldName)}
+      />
+    )
+  }
+
+  renderMinPrice() {
+    return this.renderPrice({
+      className: "header__min-price",
+      placeholder: "Min price",
+      defaultValue: Number(this.props.filter.minPrice),
+      fieldName: FIELD.MIN_PRICE
+    })
+  }
+
+  renderMaxPrice() {
+    return this.renderPrice({
+      className: "header__max-price",
+      placeholder: "Max price",
+      defaultValue: Number(this.props.filter.maxPrice),
+      fieldName: FIELD.MAX_PRICE
+    })
   }
 
   render() {
     return (
       <header className="rel header">
         <Row type="flex" justify="space-between" gutter={16}>
-          <Col {...{ xs: 24, md: 24, lg: 8 }}>
-            <SearchBox
-              destination={this.state.params.location}
-              onLocationChange={this.handleLocationChange}
-            />
+          <Col {...GRID}>
+            <SearchBox />
           </Col>
-          <Col {...{ xs: 24, md: 24, lg: 8 }}>
-            <Slider
-              className="header__stars"
-              range
-              tooltipVisible={false}
-              step={20}
-              defaultValue={this.state.params.starRange.map(Number)}
-              marks={buildStars()}
-              onAfterChange={this.handleStarChange}
-            />
+          <Col {...GRID}>
+            {this.renderStars()}
           </Col>
           <Col>
             <Row type="flex" justify="end">
               <Col>
-                <InputNumber
-                  className="header__min-price"
-                  placeholder="Min price"
-                  defaultValue={this.state.params.minPrice}
-                  formatter={value => `${value}`.replace(REGEX.NUMBER_TO_CURRENCY_FORMAT, ',')}
-                  parser={value => value.replace(REGEX.CURRENCY_TO_NUMBER_FORMAT, '')}
-                  onChange={this.handlePriceChange(true)}
-                />
-                <InputNumber
-                  className="header__max-price"
-                  placeholder="Max price"
-                  defaultValue={this.state.params.maxPrice}
-                  formatter={value => `${value}`.replace(REGEX.NUMBER_TO_CURRENCY_FORMAT, ',')}
-                  parser={value => value.replace(REGEX.CURRENCY_TO_NUMBER_FORMAT, '')}
-                  onChange={this.handlePriceChange(false)}
-                />
+                {this.renderMinPrice()}
+                {this.renderMaxPrice()}
               </Col>
               <Col>
                 <Button

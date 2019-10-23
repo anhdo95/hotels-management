@@ -4,24 +4,29 @@ import { connect } from 'react-redux'
 import RootState from '@/interfaces/state/root-state'
 import HotelService from '@/services/hotel-service'
 
-import Presenter from './Presenter'
+import { setHotelFilter } from '@/redux/actions/filter'
 
-interface StateProps {}
+import Presenter from './Presenter'
+import { Dispatch } from 'redux'
+
+interface StateProps {
+  destination: string
+}
 
 interface DispatchProps {
-  searchDestinations: (destination: string) => Promise<string[]>
+  searchDestinations: (destination: string) => Promise<string[]>,
+  setFilterLocation: (location: string) => void
 }
 
-interface OwnProps extends RouteComponentProps {
-  destination: string | any,
-  onLocationChange: (location: string) => void,
-}
-const mapStateToProps = (_state: RootState) => {
+interface OwnProps extends RouteComponentProps { }
+
+const mapStateToProps = (state: RootState) => {
   return {
+    destination: state.filter.hotel.location
   }
 }
 
-const mapDispatchToProps = () => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
   const hotelService = new HotelService()
 
   return {
@@ -35,6 +40,10 @@ const mapDispatchToProps = () => {
       } catch (error) {
         console.error(error)
       }
+    },
+
+    setFilterLocation(location: string) {
+      dispatch(setHotelFilter({ location }))
     }
   }
 }

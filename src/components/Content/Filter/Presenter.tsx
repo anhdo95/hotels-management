@@ -1,18 +1,17 @@
 import * as React from 'react'
 import { RouteComponentProps } from 'react-router'
 import { InputNumber, Button, Row, Col, Slider, Icon } from 'antd'
-import { ParsedQuery } from 'query-string'
 
 import isEmpty = require('lodash/isEmpty')
 
 // Components
-import SearchBox from '@components/Header/SearchBox/Container'
+import SearchBox from '@components/Content/Filter/SearchBox/Container'
 
 // Interfaces
 import HotelParams from '@interfaces/hotel-params'
 
 // Utils
-import { REGEX } from '@/util/constants'
+import { REGEX, DEFAULT_PAGE } from '@/util/constants'
 import { changeUrl, getUrlParams } from '@/util/helpers'
 
 // Styles
@@ -44,7 +43,7 @@ const buildStars = () => {
 }
 
 interface PresenterProps extends RouteComponentProps {
-  searchHotels: (params: HotelParams | ParsedQuery<string>) => Promise<any[]>
+  onPageChange: (pageNumber: number) => void
 }
 
 interface PresenterState {
@@ -65,7 +64,6 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
         starRange: [0, 100],
         minPrice: 0,
         maxPrice: 0,
-        sort: '',
         pageNumber: 1
       } : params
     }
@@ -109,12 +107,14 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
   }
 
   handleSearch = async () => {
-    const { history, location, searchHotels } = this.props
+    const { history, location, onPageChange } = this.props
 
     changeUrl(history, location, this.state.params)
-    const hotels = await searchHotels(getUrlParams(history))
+    onPageChange(DEFAULT_PAGE)
+    // // const hotels = await searchHotels(getUrlParams(history))
+    // const hotels = await onSearch(getUrlParams(history))
 
-    this.setState({ hotels })
+    // this.setState({ hotels })
   }
 
   render() {

@@ -1,3 +1,4 @@
+// import { Dispatch } from 'redux'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
 
@@ -5,7 +6,7 @@ import RootState from '@/interfaces/state/root-state'
 
 import Presenter from './Presenter'
 
-interface StateProps {}
+interface StateProps { }
 
 interface DispatchProps {
 }
@@ -19,7 +20,7 @@ const mapStateToProps = (_state: RootState) => {
   }
 }
 
-const mapDispatchToProps = () => {
+const mapDispatchToProps: any = () => {
   return {
   }
 }

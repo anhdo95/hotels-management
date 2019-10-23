@@ -1,17 +1,20 @@
 import * as React from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Row, Col, List, Icon, Pagination } from 'antd';
-import { ListGridType } from 'antd/lib/list';
+import { Row, Col, List, Icon, Pagination } from 'antd'
+import { ListGridType } from 'antd/lib/list'
 import classNames from 'classnames'
 
 import isEmpty = require('lodash/isEmpty')
 
+import Filter from '@/components/Content/Filter/Container'
 import Sorting from '@/components/Content/Sorting/Container'
 
-import { REGEX, ITEM_PER_PAGE } from '@/util/constants';
+import { REGEX, ITEM_PER_PAGE } from '@/util/constants'
 import { changeUrl, getUrlParams } from '@/util/helpers'
 
 import './style.scss'
+import HotelParams from '@/interfaces/hotel-params'
+import { ParsedQuery } from 'query-string'
 
 const DEFAULT_PAGE = 1
 
@@ -33,7 +36,10 @@ const VIEW_MODE: {
 }
 
 interface PresenterProps extends RouteComponentProps {
-  hotels: any[]
+  hotels: any[],
+  totalElements: number,
+  totalPage: number
+  searchHotels: (params: HotelParams | ParsedQuery<string>) => Promise<any[]>
 }
 
 interface PresenterState {
@@ -55,7 +61,6 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
     }
   }
 
-
   handlePaginationChange = (pageNumber: number) => {
     const { history, location } = this.props
 
@@ -64,7 +69,7 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
       pageNumber
     })
 
-    this.setState({ pageNumber })
+    this.setState({ pageNumber }, this.handleSearch)
   }
 
   handleViewModeChange = (viewMode: ListGridType) => {
@@ -76,17 +81,31 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
     }
   }
 
+  handleSearch = () => {
+    const { history, searchHotels } = this.props
+
+    searchHotels(getUrlParams(history))
+  }
+
   renderTop() {
     return (
       <Row type="flex" justify="space-between" gutter={16}>
         <Col {...{ xs: 24, md: 16 }}>
-          <h2>555 hotels in Đà Nẵng, Vietnam</h2>
+          <h2>{this.props.totalElements} hotels in Đà Nẵng, Vietnam</h2>
         </Col>
         <Col {...{ xs: 24, md: 8 }}>
           <Row className="content__right" type="flex">
-            <Sorting />
-            <Icon className="content__grid-view" type="appstore" onClick={this.handleViewModeChange(VIEW_MODE.GRID)} />
-            <Icon className="content__list-view" type="menu" onClick={this.handleViewModeChange(VIEW_MODE.LIST)} />
+            <Sorting onPageChange={this.handlePaginationChange} />
+            <Icon
+              className="content__grid-view"
+              type="appstore"
+              onClick={this.handleViewModeChange(VIEW_MODE.GRID)}
+            />
+            <Icon
+              className="content__list-view"
+              type="menu"
+              onClick={this.handleViewModeChange(VIEW_MODE.LIST)}
+            />
           </Row>
         </Col>
       </Row>
@@ -101,8 +120,6 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
       '/assets/images/hotels/hotel-4431938_960_720.jpg',
       '/assets/images/hotels/hotel-2400364_960_720.jpg'
     ]
-
-    console.log('1111', 1111)
 
     function getRandomInt(max: number) {
       return Math.floor(Math.random() * Math.floor(max))
@@ -125,7 +142,11 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
         <section className="flex-column content__hotel-content-inner">
           <h3 className="content__hotel-name">{hotel.name}</h3>
           <p className="content__hotel-description">3 guests · 1 bedroom · 1 bathroom</p>
-          <p className="content__hotel-price"><strong>{hotel.cheapestPrice.toString().replace(REGEX.NUMBER_TO_CURRENCY_FORMAT, ',')}₫/night</strong></p>
+          <p className="content__hotel-price">
+            <strong>
+              {hotel.cheapestPrice.toString().replace(REGEX.NUMBER_TO_CURRENCY_FORMAT, ',')}₫/night
+            </strong>
+          </p>
           <p className="content__hotel-location">{hotel.addressLines}</p>
           <p>{this.renderStars(hotel)}</p>
         </section>
@@ -175,24 +196,31 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
     )
   }
 
-  render() {
-    const { hotels } = this.props
+  renderPagination() {
+    const { hotels, totalElements } = this.props
 
+    return hotels && totalElements > ITEM_PER_PAGE && (
+      <Pagination
+        className="align-c"
+        current={this.state.pageNumber}
+        defaultCurrent={DEFAULT_PAGE}
+        pageSize={ITEM_PER_PAGE}
+        total={totalElements}
+        onChange={this.handlePaginationChange}
+      />
+    )
+  }
+
+  render() {
     return (
-      <section className="content">
-        {this.renderTop()}
-        {this.renderHotels()}
-        {hotels && hotels.length > ITEM_PER_PAGE && (
-          <Pagination
-            className="align-c"
-            current={this.state.pageNumber}
-            defaultCurrent={DEFAULT_PAGE}
-            pageSize={ITEM_PER_PAGE}
-            total={50}
-            onChange={this.handlePaginationChange}
-          />
-        )}
-      </section>
+      <>
+        <Filter onPageChange={this.handlePaginationChange} />
+        <section className="content">
+          {this.renderTop()}
+          {this.renderHotels()}
+          {this.renderPagination()}
+        </section>
+      </>
     )
   }
 }

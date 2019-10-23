@@ -4,7 +4,7 @@ import { Select } from 'antd'
 
 import map = require('lodash/map')
 
-import { SORTING_HOTEL_OPTIONS } from '@/util/constants';
+import { SORTING_HOTEL_OPTIONS, DEFAULT_PAGE } from '@/util/constants';
 import { changeUrl, getUrlParams } from '@/util/helpers'
 
 import './style.scss'
@@ -12,17 +12,19 @@ import './style.scss'
 const { Option } = Select
 
 interface PresenterProps extends RouteComponentProps {
-
+  onPageChange: (pageNumber: number) => void
 }
 
 export default class Presenter extends React.PureComponent<PresenterProps> {
-  handleChange = (sort: string) => {
-    const { history, location } = this.props
+  handleSelect = (sort: string) => {
+    const { history, location, onPageChange } = this.props
 
     changeUrl(history, location, {
       ...getUrlParams(history),
-      sort
+      sort,
     })
+
+    onPageChange(DEFAULT_PAGE)
   }
 
   render() {
@@ -31,7 +33,7 @@ export default class Presenter extends React.PureComponent<PresenterProps> {
         size="large"
         style={{ width: 250 }}
         placeholder="Order by: Select"
-        onChange={this.handleChange}
+        onSelect={this.handleSelect}
       >
         {map(SORTING_HOTEL_OPTIONS, (option) => (
           <Option key={option.key} value={option.key}>{option.value}</Option>

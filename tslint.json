@@ -22,6 +22,8 @@
       "unnecessary-else": false,
       "semicolon": [true, "never"],
 
+      "quotemark": [true, "single", "jsx-double"],
+
       "comment-format": {
           "options": [
               "check-space"

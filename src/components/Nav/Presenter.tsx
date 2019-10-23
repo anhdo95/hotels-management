@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { Link } from 'react-router-dom'
 import { Menu, Icon } from 'antd'
 
 const { SubMenu } = Menu
@@ -17,9 +18,9 @@ class Presenter extends React.PureComponent {
     return (
       <nav className="nav">
         <div className="flex-center nav__left">
-          <a href="/">
+          <Link to="/">
             <img src="/assets/images/goquo-logo.png" />
-          </a>
+          </Link>
         </div>
         <div className="nav__right">
           <Menu mode="horizontal">

@@ -30,6 +30,20 @@ export const STAR_SLIDER: any = {
 	},
 }
 
+export const SORTING_HOTEL_OPTIONS = [
+  { key: 'name:false', value: 'Name: Ascending' },
+  { key: 'name:true', value: 'Name: Descending' },
+  { key: 'price:false', value: 'Price: Low to High' },
+  { key: 'price:true', value: 'Price: High to Low' },
+]
+
+export const SORTING_HOTEL_KEYS = {
+  NAME_ASC: 'name:false',
+  NAME_DESC: 'name:true',
+  PRICE_ASC: 'price:false',
+  PRICE_DESC: 'price:true',
+}
+
 export const REGEX = {
   NUMBER_TO_CURRENCY_FORMAT: /\B(?=(\d{3})+(?!\d))/g,
   CURRENCY_TO_NUMBER_FORMAT: /\$\s?|(,*)/g

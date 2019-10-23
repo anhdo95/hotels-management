@@ -24,7 +24,7 @@ export default class HotelService {
   async searchHotels(params: HotelRequest) {
     const data = {
       query: {
-        location: params.location.trim(),
+        location: params.location && params.location.trim(),
         minStar: params.minStar,
         maxStar: params.maxStar,
         minPrice: params.minPrice,
@@ -36,7 +36,7 @@ export default class HotelService {
       },
       paging: {
         take: params.pageSize,
-        skip: (params.pageNumber - 1) * params.pageSize
+        skip: ((params.pageNumber - 1) * params.pageSize) || undefined
       }
     }
 

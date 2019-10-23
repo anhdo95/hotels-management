@@ -1,14 +1,14 @@
 import * as React from 'react'
+import { RouteComponentProps } from 'react-router'
 import { InputNumber, Button, Row, Col, Slider, Icon } from 'antd'
 import { stringify, parse } from 'query-string'
 
 import SearchBox from '@components/Header/SearchBox/Container'
 
 import HotelParams from '@interfaces/hotel-params'
-import { ITEM_PER_PAGE } from '@/util/constants'
+import { REGEX } from '@/util/constants'
 
 import './style.scss'
-import { RouteComponentProps } from 'react-router'
 
 const buildStars = () => {
   const stars = [
@@ -51,13 +51,11 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
       hotels: [],
       params: {
         location: '',
-        minStar: 0,
-        maxStar: 100,
+        starRange: [0, 100],
         minPrice: 0,
         maxPrice: 0,
         sortBy: '',
         sortDesc: false,
-        pageSize: ITEM_PER_PAGE,
         pageNumber: 1
       }
     }
@@ -87,11 +85,7 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
   }
 
   handleStarChange = (starRange: [number, number]) => {
-    const [minStar, maxStar] = starRange
-    this.updateParams({
-      minStar,
-      maxStar
-    })
+    this.updateParams({ starRange })
   }
 
   handlePriceChange = (isMinPrice: boolean) => {
@@ -130,10 +124,7 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
               range
               tooltipVisible={false}
               step={20}
-              defaultValue={[
-                this.state.params.minStar,
-                this.state.params.maxStar
-              ]}
+              defaultValue={this.state.params.starRange}
               marks={buildStars()}
               onAfterChange={this.handleStarChange}
             />
@@ -145,16 +136,16 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
                   className="header__min-price"
                   placeholder="Min price"
                   defaultValue={this.state.params.minPrice}
-                  formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                  parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                  formatter={value => `${value}`.replace(REGEX.NUMBER_TO_CURRENCY_FORMAT, ',')}
+                  parser={value => value.replace(REGEX.CURRENCY_TO_NUMBER_FORMAT, '')}
                   onChange={this.handlePriceChange(true)}
                 />
                 <InputNumber
                   className="header__max-price"
                   placeholder="Max price"
                   defaultValue={this.state.params.maxPrice}
-                  formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                  parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                  formatter={value => `${value}`.replace(REGEX.NUMBER_TO_CURRENCY_FORMAT, ',')}
+                  parser={value => value.replace(REGEX.CURRENCY_TO_NUMBER_FORMAT, '')}
                   onChange={this.handlePriceChange(false)}
                 />
               </Col>

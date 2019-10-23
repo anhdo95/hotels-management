@@ -8,3 +8,12 @@ export const setLocations = (locations: string[]) => {
     }
   }
 }
+
+export const setHotels = (hotels: any[]) => {
+  return {
+    type: ACTIONS.SET_HOTELS,
+    payload: {
+      hotels
+    }
+  }
+}

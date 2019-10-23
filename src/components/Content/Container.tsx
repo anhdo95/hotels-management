@@ -4,8 +4,10 @@ import { composeContainer } from '@/util'
 
 import Presenter from './Presenter'
 
-const mapStateToProps = (_state: RootState) => {
+const mapStateToProps = (state: RootState) => {
+  console.log('state', state)
   return {
+    hotels: state.hotel.hotels
   }
 }
 

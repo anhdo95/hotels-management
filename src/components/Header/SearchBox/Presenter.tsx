@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { AutoComplete } from 'antd'
-import { stringify } from 'query-string'
+// import { stringify } from 'query-string'
 
 import debounce = require('lodash/debounce')
 
@@ -37,12 +37,6 @@ class Presenter extends React.Component<PresenterProps, PresenterState> {
         ))}
       </OptGroup>
     )]
-  }
-
-  changeURL = (params = {}) =>  {
-    this.props.history.push(
-      `${this.props.location.pathname}?${stringify(params, {arrayFormat: 'bracket'})}`
-    )
   }
 
   // tslint:disable-next-line: member-ordering

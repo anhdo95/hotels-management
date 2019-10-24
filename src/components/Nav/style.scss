@@ -1,4 +1,6 @@
-@import '@/styles/main.scss';
+@import '@/styles/variables.scss';
+@import '@/styles/flex.scss';
+@import '@/styles/z-index.scss';
 
 .nav {
   position: fixed;
@@ -11,6 +13,8 @@
 }
 
 .nav__left {
+  @extend .flex-center;
+
   width: 200px;
   padding: 0 20px;
 }

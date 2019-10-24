@@ -25,7 +25,7 @@ class Presenter extends React.PureComponent<PresenterProps> {
   render() {
     return (
       <nav className="nav">
-        <div className="flex-center nav__left">
+        <div className="nav__left">
           <Link to="/" onClick={this.handleClick}>
             <img src="/assets/images/goquo-logo.png" />
           </Link>

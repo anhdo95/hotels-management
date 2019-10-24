@@ -56,12 +56,6 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
   constructor(props: PresenterProps) {
     super(props)
 
-    const params = getUrlParams(props.history)
-
-    if (!isEmpty(params)) {
-      this.props.setHotelFilter(params)
-    }
-
     this.state = {
       isListViewMode: false,
       viewMode: VIEW_MODE.GRID,
@@ -69,16 +63,20 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
   }
 
   componentDidMount() {
-    const unlisten = this.props.history.listen(async (location) => {
+    const params = getUrlParams(this.props.history)
+
+    if (!isEmpty(params)) {
+      this.props.setHotelFilter(params)
+      this.props.searchHotels(params)
+    }
+
+    this.unlisten = this.props.history.listen(async (location) => {
       if (location.pathname === '/') {
         setTimeout(() => {
           this.props.searchHotels(this.props.filter)
         }, 0)
       }
     })
-
-    this.unlisten = unlisten
-    this.props.searchHotels(this.props.filter)
   }
 
   componentWillUnmount() {
@@ -106,7 +104,6 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
       const { history, location, filter } = this.props
 
       changeUrl(history, location, filter)
-      // searchHotels(filter)
     }, 0)
   }
 
@@ -114,7 +111,7 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
     return (
       <Row type="flex" justify="space-between" gutter={16}>
         <Col {...{ xs: 24, md: 16 }}>
-          <h2>{this.props.totalElements} hotels</h2>
+          {!!this.props.totalElements && <h2>{this.props.totalElements} hotels</h2>}
         </Col>
         <Col {...{ xs: 24, md: 8 }}>
           <Row className="content__right" type="flex">

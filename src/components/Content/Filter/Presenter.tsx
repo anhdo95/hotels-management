@@ -75,6 +75,7 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
         className={props.className}
         placeholder={props.placeholder}
         value={props.value}
+        min={0}
         formatter={formatNumberToCurrency}
         parser={parseCurrencyToNumber}
         onChange={this.handleChange(props.fieldName)}

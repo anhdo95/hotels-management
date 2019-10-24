@@ -50,7 +50,7 @@ module.exports = merge(common, {
 				use: ['style-loader', 'css-loader', 'sass-loader'],
 			},
 			{
-				test: /\.(eot|svg|ttf|woff|woff2)$/i,
+				test: /\.(eot|svg|ttf|woff|woff2|gif)$/i,
 				use: [
 					{
 						loader: 'url-loader',

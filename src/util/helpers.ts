@@ -2,6 +2,8 @@ import { History, Location } from 'history'
 import { stringify, parse } from 'query-string'
 import { REGEX } from './constants'
 
+import reduce = require('lodash/reduce')
+
 export const changeUrl = (history: History, location: Location, params = {}) => {
   history.push(
     `${location.pathname}?${stringify(params, { arrayFormat: 'bracket' })}`
@@ -18,4 +20,11 @@ export const formatNumberToCurrency = (value: number) => {
 
 export const parseCurrencyToNumber = (value: string) => {
   return value.replace(REGEX.CURRENCY_TO_NUMBER_FORMAT, '')
+}
+
+export const urlParser = (value: string, properties: object | any) => {
+  return reduce(properties, (result, current, key) => {
+    result = value.replace(`:${key}`, current)
+    return result
+  }, value)
 }

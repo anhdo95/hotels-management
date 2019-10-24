@@ -1,6 +1,9 @@
 import config from '@/config'
 import request from '@/util/request'
+import { urlParser } from '@/util/helpers'
+
 import HotelRequest from '@/interfaces/hotel-request'
+
 
 export default class HotelService {
 	async searchDestinations(params: any = {}) {
@@ -44,6 +47,21 @@ export default class HotelService {
       url: config.api.hotel.search,
       method: 'post',
       data
+    })
+
+    if (res.error) {
+      throw new Error(res.error)
+    }
+
+    return res.data
+  }
+
+  async getHotelById(id: string) {
+    const res: any = await request({
+      url: urlParser(config.api.hotel.detail, {
+        id
+      }),
+      method: 'get',
     })
 
     if (res.error) {

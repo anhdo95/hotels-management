@@ -1,8 +1,8 @@
 export default {
   hotel: {
-    search: '/hotels/query_basic',
+    search: '/api/hotels/query_basic',
   },
   destination: {
-    search: '/destination/suggess'
+    search: '/api/destination/suggess'
   }
 }

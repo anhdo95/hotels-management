@@ -19,15 +19,9 @@ export default class Presenter extends React.Component<PresenterProps> {
   }
 
   render() {
-    const props: any = {}
-
-    if (this.props.filter.sort) {
-      props.defaultValue = this.props.filter.sort
-    }
-
     return (
       <Select
-        { ...props }
+        value={this.props.filter.sort || undefined}
         size="large"
         style={{ width: 250 }}
         placeholder="Order by: Select"

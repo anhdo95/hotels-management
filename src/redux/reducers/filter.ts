@@ -22,11 +22,15 @@ const filterReducer = (state = initialState, action: any) => {
         ...newState.hotel,
         ...action.payload.filter
       }
-			break
+      break
+
+    case ACTIONS.RESET_HOTEL_FILTER:
+      newState.hotel = cloneDeep(initialState.hotel)
+      break
 
 		default:
 			return state
-	}
+  }
 
 	return newState
 }

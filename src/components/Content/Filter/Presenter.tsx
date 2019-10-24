@@ -62,9 +62,9 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
         range
         tooltipVisible={false}
         step={20}
-        defaultValue={this.props.filter.starRange.map(Number)}
+        value={this.props.filter.starRange.map(Number)}
         marks={stars}
-        onAfterChange={this.handleChange(FIELD.STAR_RANGE)}
+        onChange={this.handleChange(FIELD.STAR_RANGE)}
       />
     )
   }
@@ -74,7 +74,7 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
       <InputNumber
         className={props.className}
         placeholder={props.placeholder}
-        defaultValue={props.defaultValue}
+        value={props.value}
         formatter={formatNumberToCurrency}
         parser={parseCurrencyToNumber}
         onChange={this.handleChange(props.fieldName)}
@@ -86,7 +86,7 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
     return this.renderPrice({
       className: 'header__min-price',
       placeholder: 'Min price',
-      defaultValue: Number(this.props.filter.minPrice),
+      value: Number(this.props.filter.minPrice),
       fieldName: FIELD.MIN_PRICE
     })
   }
@@ -95,7 +95,7 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
     return this.renderPrice({
       className: 'header__max-price',
       placeholder: 'Max price',
-      defaultValue: Number(this.props.filter.maxPrice),
+      value: this.props.filter.maxPrice,
       fieldName: FIELD.MAX_PRICE
     })
   }

@@ -9,3 +9,9 @@ export const setHotelFilter = (filter: any) => {
 	}
 }
 
+export const resetHotelFilter = () => {
+	return {
+		type: ACTIONS.RESET_HOTEL_FILTER,
+	}
+}
+

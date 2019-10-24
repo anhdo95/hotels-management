@@ -53,10 +53,11 @@ class Presenter extends React.Component<PresenterProps, PresenterState> {
         className="header__search-box"
         size="large"
         placeholder="Find hotels by location"
-        defaultValue={this.props.destination}
+        value={this.props.destination}
         dataSource={this.options}
-        onSearch={this.handleSearch}
+        onChange={this.props.setFilterLocation}
         onSelect={this.props.setFilterLocation}
+        onSearch={this.handleSearch}
       />
     )
   }

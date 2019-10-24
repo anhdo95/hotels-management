@@ -13,12 +13,20 @@ const menuItems = [
   { key: 'sign-in', icon: 'login', text: 'Sign in' },
 ]
 
-class Presenter extends React.PureComponent {
+interface PresenterProps {
+  resetHotelFilter: () => void
+}
+
+class Presenter extends React.PureComponent<PresenterProps> {
+  handleClick = () => {
+    this.props.resetHotelFilter()
+  }
+
   render() {
     return (
       <nav className="nav">
         <div className="flex-center nav__left">
-          <Link to="/">
+          <Link to="/" onClick={this.handleClick}>
             <img src="/assets/images/goquo-logo.png" />
           </Link>
         </div>

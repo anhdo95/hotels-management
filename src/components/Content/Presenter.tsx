@@ -7,6 +7,7 @@ import { ParsedQuery } from 'query-string'
 import classNames from 'classnames'
 
 import isEmpty = require('lodash/isEmpty')
+// import isEqual = require('lodash/isEqual')
 
 import Filter from '@/components/Content/Filter/Container'
 import Sorting from '@/components/Content/Sorting/Container'
@@ -49,6 +50,9 @@ interface PresenterState {
 }
 
 export default class Presenter extends React.Component<PresenterProps, PresenterState> {
+  unlisten: any
+  pathname: string
+
   constructor(props: PresenterProps) {
     super(props)
 
@@ -65,8 +69,21 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
   }
 
   componentDidMount() {
-    if (!isEmpty(getUrlParams(this.props.history))) {
-      this.handleSearch()
+    const unlisten = this.props.history.listen(async (location) => {
+      if (location.pathname === '/') {
+        setTimeout(() => {
+          this.props.searchHotels(this.props.filter)
+        }, 0)
+      }
+    })
+
+    this.unlisten = unlisten
+    this.props.searchHotels(this.props.filter)
+  }
+
+  componentWillUnmount() {
+    if (this.unlisten) {
+      this.unlisten()
     }
   }
 
@@ -86,10 +103,10 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
 
   handleSearch = () => {
     setTimeout(() => {
-      const { history, location, filter, searchHotels } = this.props
+      const { history, location, filter } = this.props
 
       changeUrl(history, location, filter)
-      searchHotels(filter)
+      // searchHotels(filter)
     }, 0)
   }
 

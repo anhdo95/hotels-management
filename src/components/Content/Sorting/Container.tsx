@@ -1,12 +1,13 @@
 import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
 import { RouteComponentProps, withRouter } from 'react-router'
 
 import RootState from '@/interfaces/state/root-state'
+import { setHotelFilter } from '@/redux/actions/filter'
+
+import { DEFAULT_PAGE } from '@/util/constants'
 
 import Presenter from './Presenter'
-import { Dispatch } from 'redux'
-import { setHotelFilter } from '@/redux/actions/filter'
-import { DEFAULT_PAGE } from '@/util/constants'
 
 interface StateProps {
   filter: any

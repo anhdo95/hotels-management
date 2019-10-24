@@ -8,7 +8,6 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import './style.scss'
 
-
 interface PresenterProps extends RouteComponentProps {
   getHotel: (id: string) => Promise<any>,
   match: match<{ hotelId: string }>

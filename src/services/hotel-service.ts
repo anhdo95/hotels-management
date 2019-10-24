@@ -4,7 +4,6 @@ import { urlParser } from '@/util/helpers'
 
 import HotelRequest from '@/interfaces/hotel-request'
 
-
 export default class HotelService {
 	async searchDestinations(params: any = {}) {
     const data = {

@@ -7,7 +7,6 @@ import { ParsedQuery } from 'query-string'
 import classNames from 'classnames'
 
 import isEmpty = require('lodash/isEmpty')
-// import isEqual = require('lodash/isEqual')
 
 import Filter from '@/components/Content/Filter/Container'
 import Sorting from '@/components/Content/Sorting/Container'

@@ -1,10 +1,9 @@
-// import { Dispatch } from 'redux'
 import { Dispatch } from 'redux'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
 
-import RootState from '@/interfaces/state/root-state'
 import { setHotelFilter } from '@/redux/actions/filter'
+import RootState from '@/interfaces/state/root-state'
 
 import Presenter from './Presenter'
 

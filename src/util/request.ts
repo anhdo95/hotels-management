@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { RESPONSE_STATUS } from '@/util/constants';
+import { RESPONSE_STATUS } from '@/util/constants'
 
 const request = (options: any = {}) => {
 	const headers = {

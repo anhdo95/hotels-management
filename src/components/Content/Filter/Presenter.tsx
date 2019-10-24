@@ -84,8 +84,8 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
 
   renderMinPrice() {
     return this.renderPrice({
-      className: "header__min-price",
-      placeholder: "Min price",
+      className: 'header__min-price',
+      placeholder: 'Min price',
       defaultValue: Number(this.props.filter.minPrice),
       fieldName: FIELD.MIN_PRICE
     })
@@ -93,8 +93,8 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
 
   renderMaxPrice() {
     return this.renderPrice({
-      className: "header__max-price",
-      placeholder: "Max price",
+      className: 'header__max-price',
+      placeholder: 'Max price',
       defaultValue: Number(this.props.filter.maxPrice),
       fieldName: FIELD.MAX_PRICE
     })

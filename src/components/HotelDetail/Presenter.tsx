@@ -2,6 +2,8 @@ import * as React from 'react'
 import { RouteComponentProps, match } from 'react-router-dom'
 import Slider, { LazyLoadTypes } from 'react-slick'
 
+import Map from '@/components/Map/Container'
+
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import './style.scss'
@@ -32,7 +34,7 @@ class Presenter extends React.PureComponent<PresenterProps, PresenterState> {
   }
 
   get sliderSettings() {
-    const lazyLoad:LazyLoadTypes = 'ondemand'
+    const lazyLoad: LazyLoadTypes = 'ondemand'
 
     return {
       dots: true,
@@ -66,8 +68,16 @@ class Presenter extends React.PureComponent<PresenterProps, PresenterState> {
             ))}
           </Slider>
         </div>
-        <div className="hotel-detail__description">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, veritatis maiores voluptatibus veniam aliquid consequuntur perspiciatis inventore nostrum dicta cum dolore laboriosam aut excepturi quisquam eius eaque deserunt? Ratione, aspernatur.
+        <div className="hotel-detail__map">
+          <div className="hotel-detail__map-inner">
+            {hotel.latitude && hotel.longitude && (
+              <Map
+                center={{ lat: hotel.latitude, lng: hotel.longitude }}
+                zoom={20}
+                text={hotel.name}
+              />
+            )}
+          </div>
         </div>
       </div>
     )

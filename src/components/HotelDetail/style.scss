@@ -1,3 +1,4 @@
+@import '@/styles/variables.scss';
 @import '@/styles/positions.scss';
 @import '@/styles/z-index.scss';
 @import '@/styles/mixins.scss';
@@ -38,6 +39,18 @@
 	}
 }
 
-.hotel-detail__description {
-	padding: 0 1em;
+.hotel-detail__map {
+  display: flex;
+  justify-content: center;
+
+  margin-top: 5em;
+}
+
+.hotel-detail__map-inner {
+  width: 100%;
+  height: 500px;
+
+  @media (min-width: $m) {
+    width: 50%;
+  }
 }

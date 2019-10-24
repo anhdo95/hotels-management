@@ -63,13 +63,7 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
   }
 
   componentDidMount() {
-    const params = getUrlParams(this.props.history)
-
-    if (!isEmpty(params)) {
-      this.props.setHotelFilter(params)
-      this.props.searchHotels(params)
-    }
-
+    this.initializeHotels()
     this.unlisten = this.props.history.listen(async (location) => {
       if (location.pathname === '/') {
         setTimeout(() => {
@@ -82,6 +76,17 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
   componentWillUnmount() {
     if (this.unlisten) {
       this.unlisten()
+    }
+  }
+
+  initializeHotels() {
+    const params = getUrlParams(this.props.history)
+
+    if (!isEmpty(params)) {
+      this.props.setHotelFilter(params)
+      this.props.searchHotels(params)
+    } else {
+      this.props.searchHotels(this.props.filter)
     }
   }
 
@@ -218,7 +223,7 @@ export default class Presenter extends React.Component<PresenterProps, Presenter
 
     return hotels && totalElements > ITEM_PER_PAGE && (
       <Pagination
-        className="align-c"
+        className="content__pagination"
         current={Number(filter.pageNumber)}
         pageSize={ITEM_PER_PAGE}
         total={totalElements}
